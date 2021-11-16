@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
+  AuthForm(this.sumitFn);
+  final void Function(String email, String password, String username,
+      bool isLogin, BuildContext ctx) sumitFn;
   @override
   _AuthFormState createState() => _AuthFormState();
 }
@@ -10,14 +13,17 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   var _isLogin = true;
-  String _userEmail = '';
-  String _userName = '';
-  String _userPassword = '';
+
+  String? _userEmail;
+  String? _userName;
+  String? _userPassword;
   void _trySubmit() {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState!.save();
+      widget.sumitFn(_userEmail.toString().trim(), _userName.toString().trim(),
+          _userPassword.toString().trim(), _isLogin, context);
     }
   }
 
@@ -33,13 +39,14 @@ class _AuthFormState extends State<AuthForm> {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Form(
+                key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextFormField(
-                      key: const ValueKey('email'),
+                      key: ValueKey('email'),
                       validator: (value) {
-                        if (value!.isEmpty || !value.contains('@')) {
+                        if (value!.isEmpty) {
                           return 'Please enter a valid email';
                         }
                         return null;
@@ -53,9 +60,9 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                     if (!_isLogin)
                       TextFormField(
-                        key: const ValueKey('name'),
+                        key: ValueKey('name'),
                         validator: (value) {
-                          if (value!.isEmpty || value.length < 4) {
+                          if (value!.isEmpty) {
                             return 'user name must be at least 4 charactor';
                           }
                           return null;
@@ -67,9 +74,9 @@ class _AuthFormState extends State<AuthForm> {
                             const InputDecoration(labelText: 'User name'),
                       ),
                     TextFormField(
-                      key: const ValueKey('password'),
+                      key: ValueKey('password'),
                       validator: (value) {
-                        if (value!.isEmpty || value.length < 7) {
+                        if (value!.isEmpty) {
                           return 'Password must be at least 7 charactor';
                         }
                         return null;
