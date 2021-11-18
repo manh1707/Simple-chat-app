@@ -1,5 +1,5 @@
 import 'package:chat_app/widgets/chat/messages.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chat_app/widgets/chat/new_message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +8,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Chat'),
+        title: const Text('Your Chat'),
         actions: [
           DropdownButton(
             items: [
@@ -41,11 +41,9 @@ class ChatScreen extends StatelessWidget {
       ),
       body: Container(
         child: Column(
-          children: [Expanded(child: Messages())],
+          children: [Expanded(child: Messages()), NewMessage()],
         ),
       ),
-      floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.add), onPressed: () {}),
     );
   }
 }
