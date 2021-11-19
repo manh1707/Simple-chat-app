@@ -21,7 +21,7 @@ class _AuthFormState extends State<AuthForm> {
   String? _userEmail;
   String? _userName;
   String? _userPassword;
-  var _userImageFile;
+  late File _userImageFile;
   void _pickImage(File image) {
     _userImageFile = image;
   }
