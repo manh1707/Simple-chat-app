@@ -1,5 +1,3 @@
-// ignore_for_file: unused_field
-
 import 'dart:io';
 
 import 'package:chat_app/widgets/pickers/user_image_picker.dart';
@@ -9,7 +7,7 @@ class AuthForm extends StatefulWidget {
   AuthForm(this.sumitFn, this.isLoading);
   final bool isLoading;
   final void Function(String email, String password, String username,
-      File image, bool isLogin, BuildContext ctx) sumitFn;
+      File? image, bool isLogin, BuildContext ctx) sumitFn;
   @override
   _AuthFormState createState() => _AuthFormState();
 }
@@ -21,7 +19,7 @@ class _AuthFormState extends State<AuthForm> {
   String? _userEmail;
   String? _userName;
   String? _userPassword;
-  late File _userImageFile;
+  File? _userImageFile;
   void _pickImage(File image) {
     _userImageFile = image;
   }
@@ -29,7 +27,8 @@ class _AuthFormState extends State<AuthForm> {
   void _trySubmit() {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-    if (_userImageFile == null && !_isLogin) {
+
+    if (!_isLogin && _userImageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('Please pick image '),
         backgroundColor: Theme.of(context).errorColor,
@@ -61,7 +60,7 @@ class _AuthFormState extends State<AuthForm> {
                   children: [
                     if (!_isLogin) UserImagePicker(_pickImage),
                     TextFormField(
-                      key: ValueKey('email'),
+                      key: const ValueKey('email'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter a valid email';
@@ -77,7 +76,7 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                     if (!_isLogin)
                       TextFormField(
-                        key: ValueKey('name'),
+                        key: const ValueKey('name'),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'user name must be at least 4 charactor';
@@ -91,7 +90,7 @@ class _AuthFormState extends State<AuthForm> {
                             const InputDecoration(labelText: 'User name'),
                       ),
                     TextFormField(
-                      key: ValueKey('password'),
+                      key: const ValueKey('password'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Password must be at least 7 charactor';

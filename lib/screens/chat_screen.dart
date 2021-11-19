@@ -12,6 +12,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
+    super.initState();
     final fbm = FirebaseMessaging.instance;
     fbm.requestPermission();
     FirebaseMessaging.onMessage.listen((event) {
@@ -23,7 +24,6 @@ class _ChatScreenState extends State<ChatScreen> {
       return;
     });
     fbm.subscribeToTopic('chat');
-    super.initState();
   }
 
   @override
